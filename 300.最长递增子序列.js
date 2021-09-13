@@ -67,6 +67,7 @@
  * @return {number}
  */
 var lengthOfLIS = function(nums) {
+    // dp
     let length = nums.length;
     let dp = new Array(length);
     dp[0] = 1;
@@ -82,6 +83,37 @@ var lengthOfLIS = function(nums) {
     }
     return max;
 };
+var lengthOfLIS = function(nums) {
+    // greedy + binary search
+    let length = nums.length;
+    if(length < 2) return length;
+
+    let tails = [nums[0]];
+    for(let idx = 1; idx < length; idx++) {
+        if(nums[idx] <= tails[tails.length-1]) {
+            tails[bnrySrch(tails, nums[idx])] = nums[idx];
+        } else {
+            tails.push(nums[idx]);
+        }
+    }
+
+    return tails.length;
+
+    function bnrySrch(arr, value) {
+        let [l, r] = [0, arr.length-1];
+        while(l <= r) {
+            let m = Math.floor((l+r+1)/2);
+            if(value === arr[m]) {
+                return m;
+            } else if(value < arr[m]) {
+                r = m-1;
+            } else {
+                l = m+1;
+            }
+        } 
+        return r+1;
+    }
+}
 lengthOfLIS([4,10,4,3,8,9]);
 // @lc code=end
 
