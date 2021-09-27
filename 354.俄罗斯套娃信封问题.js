@@ -120,6 +120,10 @@ var maxEnvelopes = function(envelopes) {
     }
     return ans;
 };
+
+var maxEnvelopes = function(envelopes) {
+    
+}
 // console.log(maxEnvelopes([[5,4],[6,4],[6,7],[2,3]]));
 // @lc code=end
 
