@@ -86,42 +86,44 @@
  * @param {string} s
  * @return {number}
  */
-var numDecodings = function(s) {
+ var numDecodings = function(s) {
     const length  = s.length;
-    const dp = new Array(length);
-    if(s[0] === '0') return 0;
 
-    // dp initialization
+    const dp = new Array(length+1).fill(0);
     dp[0] = 1;
 
-    for(let i = 1; i < length; i++) {
-        dp[i] = dp[i-1] + (function() {
-            const prevNum = parseInt(s[i-1]);
-            const currNum = parseInt(s[i]);
-            if(prevNum === 0) {
-                return 0;
-            } else if(prevNum === 1) {
-                return currNum === 0 ? 0 : 1;
-            } else if(prevNum === 2) {
-                if(currNum > 0 && currNum <= 6) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            } else {
-                if(currNum === 0) {
-                    return Infinity;
-                } else {
-                    return 0;
-                }
-            }
-        })();
-        if(dp[i] === Infinity) return 0;
+    for(let i = 1; i <= length; i++) {
+        if(i >= 1 && s[i-1] !== '0') {
+            dp[i] += dp[i-1];
+        }
+        if(i >= 2 && s[i-2] !== '0' && (s[i-2] + s[i-1] >= 10 && s[i-2] + s[i-1] <= 26)) {
+            dp[i] += dp[i-2]
+        }
     }
-
-    return dp[length-1];
+    return dp[length];
 };
 
-numDecodings('12')
+var numDecodings = function(s) {
+    /**
+     * 因为状态方程中的当前状态只和之前的两个状态相关联，所以理论上
+     * 只需要维护三个状态即可，而不需要维护一整个长度为 s.length+1
+     * 的数组
+     */
+    const length  = s.length;
+    let [prepre, pre, cur] = [0, 1, 0];
+
+    for(let i = 0; i < length; i++) {
+        if(s[i] !== '0') {
+            cur += pre;
+        }
+        if(i >= 1 && s[i-1] !== '0' && (s[i-1] + s[i] >= 10 && s[i-1] + s[i] <= 26)) {
+            cur += prepre;
+        }
+        prepre = pre;
+        pre = cur;
+        cur = 0;
+    }
+    return pre;
+};
 // @lc code=end
 
