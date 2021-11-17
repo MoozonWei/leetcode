@@ -54,7 +54,7 @@
 
 // @lc code=start
 /**
- * 暴力解法
+ * 暴力解法 (最好别这么干)
  * @param {string[]} words
  * @return {number}
  */
