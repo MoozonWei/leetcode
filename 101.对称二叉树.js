@@ -58,14 +58,14 @@
  * @param {TreeNode} root
  * @return {boolean}
  */
- var isSymmetric = function(root) {
+var isSymmetric = function (root) {
     let leftPointer = root.left;
     let rightPointer = root.right;
     return check(leftPointer, rightPointer);
 };
 function check(leftPointer, rightPointer) {
-    if(!leftPointer && !rightPointer) return true;
-    if(!leftPointer || !rightPointer) return false;
+    if (!leftPointer && !rightPointer) return true;
+    if (!leftPointer || !rightPointer) return false;
     return leftPointer.val === rightPointer.val && check(leftPointer.left, rightPointer.right) && check(leftPointer.right, rightPointer.left);
 }
 // @lc code=end
