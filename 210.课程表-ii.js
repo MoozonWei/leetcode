@@ -67,6 +67,7 @@
  * @param {number[][]} prerequisites
  * @return {number[]}
  */
+// BFS
 var findOrder = function (numCourses, prerequisites) {
   let result = [];
   const queue = [];
@@ -101,6 +102,41 @@ var findOrder = function (numCourses, prerequisites) {
     })
   }
   return result.length === numCourses ? result : [];
+};
+// DFS
+var findOrder = function (numCourses, prerequisites) {
+  const map = new Map();
+  const stack = [];
+  const visited = new Array(numCourses).fill(0);
+  let noCir = true;
+  for(let i = 0; i < numCourses; i++) map.set(i, []);
+  prerequisites.forEach(e => {
+    map.set(e[1], [...map.get(e[1]), e[0]])
+  });
+  for(let key of map.keys()) {
+    if(visited[key] === 0 && noCir) {
+      dfs(key);
+    }
+  }
+
+  return noCir ? stack.reverse() : [];
+
+  function dfs(key) {
+    const thisNode = key;
+    const nextNodesArr = map.get(key);
+    visited[thisNode] = 1;
+    nextNodesArr.forEach(e => {
+      if(visited[e] === 0) {
+        dfs(e);
+        if(!noCir) return;
+      } else if(visited[e] === 1) {
+        noCir = false;
+        return;
+      }
+    });
+    visited[thisNode] = 2;
+    stack.push(thisNode);
+  }
 };
 // @lc code=end
 
